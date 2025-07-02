@@ -2,7 +2,9 @@ package out
 
 import (
 	"fmt"
+	"os"
 	"rconn/src/constants"
+	"rconn/src/models"
 	"strings"
 
 	"github.com/pterm/pterm"
@@ -55,23 +57,20 @@ func Banner(message string) string {
 	return sb.String()
 }
 
-type PromptInputParams struct {
-	Prompt     string
-	Default    string
-	IsPassword bool
-}
-
-func PromptInput(params PromptInputParams) (string, error) {
-	promptIcon := pterm.NewStyle(pterm.FgLightBlue, pterm.Bold).Sprint("[?]")
-	promptText := pterm.NewStyle(pterm.FgLightWhite).Sprint(params.Prompt)
+func PromptInput(params models.PromptInputParams) (string, error) {
+	promptIcon := pterm.NewStyle(pterm.FgLightMagenta, pterm.Bold).Sprint("[?]")
+	promptLabel := pterm.NewStyle(pterm.FgLightWhite).Sprint(params.Label)
 
 	input := pterm.DefaultInteractiveTextInput.
-		WithTextStyle(pterm.NewStyle(pterm.FgWhite)).
-		WithDefaultText(params.Default)
+		WithDefaultText(params.DefaultValue).
+		WithOnInterruptFunc(func() {
+			Logger.Error("Aborted by user")
+			os.Exit(1)
+		})
 
 	if params.IsPassword {
 		input = input.WithMask("*")
 	}
 
-	return input.Show(promptIcon + " " + promptText)
+	return input.Show(promptIcon + " " + promptLabel)
 }

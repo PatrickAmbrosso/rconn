@@ -18,14 +18,16 @@ const (
 )
 
 var (
+	flagGlobalConfigPath string
+
 	flagAddHostAddress string
 	flagAddUsername    string
 	flagAddPassword    string
-	flagAddDomain      string
 
 	flagConnectHostAddress string
 	flagConnectUsername    string
 	flagConnectPassword    string
+	flagConnectInteractive bool
 
 	flagRemoveForce bool
 )
@@ -47,6 +49,8 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	rootCmd.PersistentFlags().StringVarP(&flagGlobalConfigPath, "config", "c", "", "path to the alternate config file to use")
 
 	rootCmd.SetFlagErrorFunc(func(cmd *cobra.Command, err error) error {
 		cmd.Help()
