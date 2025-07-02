@@ -1,0 +1,18 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Default task
+    cmds:
+      - task --list-all
+
+  tidy:
+    desc: Tidy the project
+    cmds:
+      - go mod tidy
+      - go mod verify
+
+  build:
+    desc: Build the project
+    cmds:
+      - go build -ldflags "-s -w" -o ./rconn.exe ./src/main.go
