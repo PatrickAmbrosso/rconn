@@ -51,7 +51,7 @@ func init() {
 	rootCmd.SetFlagErrorFunc(func(cmd *cobra.Command, err error) error {
 		cmd.Help()
 		fmt.Println()
-		out.Logger.Error("Flag parse error", "error", err.Error())
+		out.Logger.Error("Flag parse error: " + err.Error())
 		os.Exit(1)
 		return nil
 	})

@@ -24,7 +24,7 @@ func ConnectRDP(params RDPConnection) error {
 	cmd.Stderr = nil // suppress error output too
 
 	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("failed to launch RDP session: %w", err)
+		return fmt.Errorf("Failed to launch RDP session with %w", err)
 	}
 
 	return nil

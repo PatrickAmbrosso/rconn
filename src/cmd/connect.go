@@ -25,11 +25,8 @@ var connectCmd = &cobra.Command{
 
 		if flagConnectHostAddress == "" {
 			flagConnectHostAddress, err = out.PromptInput(out.PromptInputParams{
-				SectionHeading: "RDP Connection Details",
-				Title:          "IP Address or Hostname of computer to RDP into",
-				Description:    "IP Address or hostname of the remote computer",
-				Placeholder:    "192.168.1.100",
-				IsPassword:     false,
+				Prompt:     "Hostname/IP addr of computer to RDP into",
+				IsPassword: false,
 			})
 			if err != nil {
 				valueErrs = append(valueErrs, "host address")
@@ -38,11 +35,8 @@ var connectCmd = &cobra.Command{
 
 		if flagConnectUsername == "" {
 			flagConnectUsername, err = out.PromptInput(out.PromptInputParams{
-				SectionHeading: "RDP Connection Details",
-				Title:          "Username",
-				Description:    "Windows user account to connect to host " + flagConnectHostAddress,
-				Placeholder:    "admin",
-				IsPassword:     false,
+				Prompt:     "User account to connect to " + flagConnectHostAddress,
+				IsPassword: false,
 			})
 			if err != nil {
 				valueErrs = append(valueErrs, "username")
@@ -51,11 +45,8 @@ var connectCmd = &cobra.Command{
 
 		if flagConnectPassword == "" {
 			flagConnectPassword, err = out.PromptInput(out.PromptInputParams{
-				SectionHeading: "RDP Connection Details",
-				Title:          "Password",
-				Description:    "Password to connect to " + flagConnectHostAddress + " with " + flagConnectUsername + " account",
-				Placeholder:    "P@ssw0rd",
-				IsPassword:     true,
+				Prompt:     "Password for user " + flagConnectUsername,
+				IsPassword: true,
 			})
 			if err != nil {
 				valueErrs = append(valueErrs, "password")
@@ -63,7 +54,7 @@ var connectCmd = &cobra.Command{
 		}
 
 		if len(valueErrs) > 0 {
-			out.Logger.Error("Missing required input(s)", "fields", strings.Join(valueErrs, ", "))
+			out.Logger.Error("Missing required input(s): " + strings.Join(valueErrs, ", "))
 			os.Exit(1)
 		}
 
@@ -74,7 +65,7 @@ var connectCmd = &cobra.Command{
 		})
 
 		if err != nil {
-			out.Logger.Error("Failed to connect to RDP session", "error", err.Error())
+			out.Logger.Error(err.Error())
 			os.Exit(1)
 		}
 
